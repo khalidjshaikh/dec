@@ -24,6 +24,29 @@ func main() {
 	}
 
 	for _, n := range vals {
-		fmt.Printf("dec: %25s | hex: 0x%016X | bin: %064b\n", commaize(n), n, n)
+		fmt.Printf("dec: %25s | hex: 0x%016X | bin: %064b | int64: %+25d\n",
+			commaize(n), n, n, int64(n))
+	}
+
+	fmt.Println("\n--- all 64 bits set to 1 ---")
+	allOnes := ^uint64(0)
+	fmt.Printf("dec: %25s | hex: 0x%016X | bin: %064b | int64: %+25d\n",
+		commaize(allOnes), allOnes, allOnes, int64(allOnes))
+
+	fmt.Println("\n--- 110000...0000 (top two bits set) ---")
+	topTwo := uint64(0xC000000000000000)
+	fmt.Printf("dec: %25s | hex: 0x%016X | bin: %064b | int64: %+25d\n",
+		commaize(topTwo), topTwo, topTwo, int64(topTwo))
+
+	fmt.Println("\n--- all 1s (64-bit) ---")
+	fmt.Printf("dec: %25s | hex: 0x%016X | bin: %064b | int64: %+25d\n",
+		commaize(allOnes), allOnes, allOnes, int64(allOnes))
+
+	fmt.Println("\n--- sign bit on (lines 1-63) ---")
+	const signBit uint64 = 0x8000000000000000
+	for _, n := range vals[:63] {
+		m := n | signBit
+		fmt.Printf("dec: %25s | hex: 0x%016X | bin: %064b | int64: %+25d\n",
+			commaize(m), m, m, int64(m))
 	}
 }
