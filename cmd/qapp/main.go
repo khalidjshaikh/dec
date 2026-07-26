@@ -1,10 +1,8 @@
 package main
 
 import (
-	"crypto/rand"
-	"encoding/binary"
 	"fmt"
-	"math/bits"
+	"time"
 )
 
 func commaize32(n uint32) string {
@@ -20,23 +18,28 @@ func commaize32(n uint32) string {
 }
 
 func main() {
-	var seed uint32
-	binary.Read(rand.Reader, binary.LittleEndian, &seed)
-	var v uint32 = seed
-
-	for range 63 {
-		// xorshift32 — deterministic from the seed, so output is reproducible.
-		v ^= v << 13
-		v ^= v >> 17
-		v ^= v << 5
-
-		fmt.Printf("dec: %14s | hex: %08X | bin: %032b\n",
-			commaize32(v), v, v)
+	vals := []uint32{
+		426468054, 382242033, 20482497, 635759739,
+		892973682, 92319286, 252257232, 919600579,
+		46280980, 78910883, 44846971, 145363995,
+		588494093, 534042910, 600510306, 810531506,
+		808361567, 302730186, 322557491, 680152828,
+		75431177, 340128926, 832334903, 521381789,
+		582264329, 803331639, 75936816, 51495929,
+		485989707, 364838718, 859614646, 449830743,
+		765599512, 931352635, 960829888, 936037131,
+		207213972, 751930558, 94398108, 25203121,
+		200974496, 542749299, 18661782, 128418124,
+		579830385, 39076215, 153263454, 322990523,
+		106087460, 515724122, 781740948, 755580572,
+		852258452, 395603502, 223525897, 756015803,
+		880613130, 886729641, 159608788, 97350787,
+		299681099, 694597304,
 	}
 
-	fmt.Println("\n--- max uint32 ---")
-	allOnes := ^uint32(0)
-	fmt.Printf("dec: %14s | hex: %08X | bin: %032b\n",
-		commaize32(allOnes), allOnes, allOnes)
-	_ = bits.UintSize // ensure "math/bits" import is used
+	for _, n := range vals {
+		fmt.Printf("dec: %14s | hex: %08X | bin: %032b\n",
+			commaize32(n), n, n)
+		time.Sleep(time.Second)
+	}
 }
